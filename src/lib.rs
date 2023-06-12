@@ -4,6 +4,7 @@
 #![warn(missing_docs)]
 #![deny(unsafe_code)]
 
+extern crate alloc;
+
 #[cfg(feature = "stack")]
-/// A singly linked list, with stack operations.
 pub mod stack;
