@@ -2,3 +2,4 @@
 name = "linked_lists"
 version = "0.1.0"
 edition = "2021"
+repository = "https://github.com/cod10129/linked_lists"
