@@ -1,2 +1,2 @@
 # linked_lists
-Rust linked_lists library.
+A crate containing many different types of linked lists.
