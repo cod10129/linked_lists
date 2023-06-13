@@ -35,6 +35,20 @@ impl<T> List<T> {
         })
     }
 
+    /// Returns whether the list is empty.
+    pub fn is_empty(&self) -> bool {
+        self.head.is_none()
+    }
+
+    /// Removes all elements from the list.
+    pub fn clear(&mut self) {
+        let mut current = self.head.take();
+
+        while let Some(mut node) = current {
+            current = node.next.take();
+        }
+    }
+
     /// Returns a shared reference to the first element in the list.
     pub fn peek(&self) -> Option<&T> {
         self.head.as_ref().map(|node| &node.elem)
@@ -54,10 +68,7 @@ impl<T> Default for List<T> {
 
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
-        let mut current = self.head.take();
-        while let Some(mut node) = current {
-            current = node.next.take();
-        }
+        self.clear()
     }
 }
 
@@ -93,5 +104,27 @@ mod tests {
         list.peek_mut().map(|val| *val = 42);
         assert_eq!(list.peek(), Some(&42));
         assert_eq!(list.pop(), Some(42));
+    }
+
+    #[test]
+    fn is_empty() {
+        let mut list = List::new();
+        assert!(list.is_empty());
+
+        list.push(1);
+        assert!(!list.is_empty());
+
+        list.pop();
+        assert!(list.is_empty());
+    }
+
+    #[test]
+    fn clear() {
+        let mut list = List::new();
+        list.push(1);
+        list.push(2);
+        list.clear();
+        assert!(list.is_empty());
+        assert!(list.pop().is_none());
     }
 }
