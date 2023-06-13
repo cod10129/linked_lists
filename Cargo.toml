@@ -6,5 +6,8 @@ repository = "https://github.com/cod10129/linked_lists"
 description = "Different types of linked lists."
 license = "MIT"
 
+[package.metadata.docs.rs]
+all-features = true
+
 [features]
 stack = []
