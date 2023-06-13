@@ -17,7 +17,7 @@ impl<T> List<T> {
         List { head: None }
     }
 
-    /// Pushes an element onto the list.
+    /// Pushes an element onto the back of the list.
     pub fn push(&mut self, elem: T) {
         let new = Box::new(Node {
             elem,
@@ -27,7 +27,7 @@ impl<T> List<T> {
         self.head = Some(new);
     }
 
-    /// Removes an element from the list.
+    /// Removes the first element from the list.
     pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|node| {
             self.head = node.next;
