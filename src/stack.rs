@@ -88,6 +88,22 @@ impl<T> List<T> {
     }
 }
 
+impl<T> Extend<T> for List<T> {
+    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
+        for elem in iter {
+            self.push(elem);
+        }
+    }
+}
+
+impl<T> FromIterator<T> for List<T> {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        let mut list = List::new();
+        list.extend(iter);
+        list
+    }
+}
+
 macro_rules! into_iter_impl {
     ($type: ty, $item: ty, $intoiter: ty, $conv_fn: path) => {
         impl<'a, T> IntoIterator for $type {
