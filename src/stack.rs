@@ -6,7 +6,7 @@ use core::iter::FusedIterator;
 /// The `ListVersion` of this module. See [its documentation](ListVersion) for more information.
 pub const VERSION: ListVersion = ListVersion {
     major: 1,
-    minor: 1,
+    minor: 2,
     patch: 0,
 };
 
