@@ -83,16 +83,27 @@ impl<T> List<T> {
     }
 }
 
-impl<T> IntoIterator for List<T> {
-    type Item = T;
-    type IntoIter = IntoIter<T>;
+macro_rules! into_iter_impl {
+    ($type: ty, $item: ty, $intoiter: ty, $conv_fn: path) => {
+        impl<'a, T> IntoIterator for $type {
+            type Item = $item;
+            type IntoIter = $intoiter;
 
-    fn into_iter(self) -> Self::IntoIter {
-        IntoIter {
-            list: self
+            fn into_iter(self) -> $intoiter {
+                $conv_fn(self)
+            }
         }
-    }
+    };
 }
+
+// This exists due to how into_iter_impl! takes a converter
+fn list_into_iter<T>(list: List<T>) -> IntoIter<T> {
+    IntoIter { list }
+}
+
+into_iter_impl!{List<T>, T, IntoIter<T>, list_into_iter}
+into_iter_impl!{&'a List<T>, &'a T, Iter<'a, T>, List::iter}
+into_iter_impl!{&'a mut List<T>, &'a mut T, IterMut<'a, T>, List::iter_mut}
 
 impl<T> Default for List<T> {
     fn default() -> Self {
