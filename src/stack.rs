@@ -108,11 +108,44 @@ impl<'a, T> Iterator for Iter<'a, T> {
             &node.elem
         })
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let mut current = self.next;
+        let mut len = 0;
+        while let Some(node) = current {
+            current = node.next.as_deref();
+            len += 1;
+        }
+        (len, Some(len))
+    }
+}
+
+impl<'a, T> ExactSizeIterator for Iter<'a, T> {
+    fn len(&self) -> usize {
+        self.size_hint().0
+    }
+
+    // NOTE:
+    // Once https://github.com/rust-lang/rust/issues/35428 is stabilized,
+    // uncomment this fn
+    /*
+    fn is_empty(&self) -> bool {
+        self.next.is_none()
+    }
+    */
 }
 
 /// An iterator that yields mutable references to the elements of a list.
 pub struct IterMut<'a, T> {
     next: Option<&'a mut Node<T>>,
+}
+
+impl<'a, T> IterMut<'a, T> {
+    fn as_iter<'b>(&'b self) -> Iter<'b, T> {
+        Iter {
+            next: self.next.as_deref()
+        }
+    }
 }
 
 impl<'a, T> Iterator for IterMut<'a, T> {
@@ -124,6 +157,25 @@ impl<'a, T> Iterator for IterMut<'a, T> {
             &mut node.elem
         })
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.as_iter().size_hint()
+    }
+}
+
+impl<'a, T> ExactSizeIterator for IterMut<'a, T> {
+    fn len(&self) -> usize {
+        self.size_hint().0
+    }
+
+    // NOTE:
+    // Once https://github.com/rust-lang/rust/issues/35428 is stabilized,
+    // uncomment this fn
+    /*
+    fn is_empty(&self) -> bool {
+        self.next.is_none()
+    }
+    */
 }
 
 #[cfg(test)]
