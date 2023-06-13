@@ -58,6 +58,11 @@ impl<T> List<T> {
         }
     }
 
+    /// Returns the length of the list.
+    pub fn len(&self) -> usize {
+        self.iter().len()
+    }
+
     /// Returns a shared reference to the first element in the list.
     pub fn peek(&self) -> Option<&T> {
         self.head.as_ref().map(|node| &node.elem)
