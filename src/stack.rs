@@ -1,6 +1,7 @@
 //! A singly linked list with stack operations.
 use super::ListVersion;
 use alloc::boxed::Box;
+use core::iter::FusedIterator;
 
 /// The `ListVersion` of this module. See [its documentation](ListVersion) for more information.
 pub const VERSION: ListVersion = ListVersion {
@@ -145,6 +146,8 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
+impl<'a, T> FusedIterator for Iter<'a, T> {}
+
 exact_size_iter_impl!{Iter<'a, T>}
 
 /// An iterator that yields mutable references to the elements of a list.
@@ -177,6 +180,8 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     }
 }
 
+impl<'a, T> FusedIterator for IterMut<'a, T> {}
+
 exact_size_iter_impl!{IterMut<'a, T>}
 
 /// An iterator that consumes a list and yields its elements.
@@ -195,6 +200,8 @@ impl<T> Iterator for IntoIter<T> {
         self.list.iter().size_hint()
     }
 }
+
+impl<T> FusedIterator for IntoIter<T> {}
 
 exact_size_iter_impl!{IntoIter<T>}
 
