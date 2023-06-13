@@ -141,6 +141,7 @@ pub struct IterMut<'a, T> {
 }
 
 impl<'a, T> IterMut<'a, T> {
+    #[allow(clippy::needless_lifetimes)]
     fn as_iter<'b>(&'b self) -> Iter<'b, T> {
         Iter {
             next: self.next.as_deref()
@@ -232,5 +233,39 @@ mod tests {
         list.clear();
         assert!(list.is_empty());
         assert!(list.pop().is_none());
+    }
+
+    #[test]
+    fn iter() {
+        let mut list = List::new();
+
+        list.push(1);
+        list.push(2);
+
+        let mut iter = list.iter();
+
+        assert_eq!(iter.next(), Some(&2));
+        assert_eq!(iter.next(), Some(&1));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn iter_mut() {
+        let mut list = List::new();
+
+        list.push(1);
+        list.push(2);
+
+        let iter = list.iter_mut();
+
+        for elem in iter {
+            *elem += 10;
+        }
+
+        let mut iter = list.iter_mut();
+
+        assert_eq!(iter.next(), Some(&mut 12));
+        assert_eq!(iter.next(), Some(&mut 11));
+        assert_eq!(iter.next(), None);
     }
 }
