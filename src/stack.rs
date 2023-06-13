@@ -1,6 +1,6 @@
 //! A singly linked list with stack operations.
-use alloc::boxed::Box;
 use super::ListVersion;
+use alloc::boxed::Box;
 
 /// The `ListVersion` of this module. See [its documentation](ListVersion) for more information.
 pub const VERSION: ListVersion = ListVersion {
@@ -82,6 +82,17 @@ impl<T> List<T> {
     }
 }
 
+impl<T> IntoIterator for List<T> {
+    type Item = T;
+    type IntoIter = IntoIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        IntoIter {
+            list: self
+        }
+    }
+}
+
 impl<T> Default for List<T> {
     fn default() -> Self {
         Self::new()
@@ -144,7 +155,7 @@ impl<'a, T> IterMut<'a, T> {
     #[allow(clippy::needless_lifetimes)]
     fn as_iter<'b>(&'b self) -> Iter<'b, T> {
         Iter {
-            next: self.next.as_deref()
+            next: self.next.as_deref(),
         }
     }
 }
@@ -175,6 +186,38 @@ impl<'a, T> ExactSizeIterator for IterMut<'a, T> {
     /*
     fn is_empty(&self) -> bool {
         self.next.is_none()
+    }
+    */
+}
+
+/// An iterator that consumes a list and yields its elements.
+pub struct IntoIter<T> {
+    list: List<T>,
+}
+
+impl<T> Iterator for IntoIter<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.list.pop()
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.list.iter().size_hint()
+    }
+}
+
+impl<T> ExactSizeIterator for IntoIter<T> {
+    fn len(&self) -> usize {
+        self.size_hint().0
+    }
+
+    // NOTE:
+    // Once https://github.com/rust-lang/rust/issues/35428 is stabilized,
+    // uncomment this fn
+    /*
+    fn is_empty(&self) -> bool {
+        self.list.is_empty()
     }
     */
 }
