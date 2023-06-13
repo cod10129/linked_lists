@@ -342,6 +342,21 @@ mod tests {
     }
 
     #[test]
+    fn from_iter() {
+        use alloc::vec;
+
+        let vec = vec![1, 2, 3];
+        let list = List::from_iter(vec);
+
+        let mut iter = list.into_iter();
+
+        assert_eq!(iter.next(), Some(3));
+        assert_eq!(iter.next(), Some(2));
+        assert_eq!(iter.next(), Some(1));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
     fn for_loop() {
         let mut list = List::new();
 
