@@ -334,11 +334,12 @@ mod tests {
         list.push(2);
         list.push(3);
 
-        let mut i = 1;
+        let mut i = 3;
 
+        // Remember which way the iteration goes
         for elem in list {
             assert_eq!(elem, i);
-            i += 1;
+            i -= 1;
         }
     }
 }
