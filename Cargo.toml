@@ -1,6 +1,6 @@
 [package]
 name = "linked_lists"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 repository = "https://github.com/cod10129/linked_lists"
 description = "Different types of linked lists."

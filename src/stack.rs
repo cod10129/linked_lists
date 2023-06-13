@@ -5,7 +5,7 @@ use alloc::boxed::Box;
 /// The `ListVersion` of this module. See [its documentation](ListVersion) for more information.
 pub const VERSION: ListVersion = ListVersion {
     major: 1,
-    minor: 0,
+    minor: 1,
     patch: 0,
 };
 
