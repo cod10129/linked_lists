@@ -58,6 +58,20 @@ impl<T> List<T> {
     pub fn peek_mut(&mut self) -> Option<&mut T> {
         self.head.as_mut().map(|node| &mut node.elem)
     }
+
+    /// Creates an iterator over shared references to each element in the list.
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter {
+            next: self.head.as_deref(),
+        }
+    }
+
+    /// Creates an iterator over mutable references to each element in the list.
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
+        IterMut {
+            next: self.head.as_deref_mut(),
+        }
+    }
 }
 
 impl<T> Default for List<T> {
@@ -69,6 +83,38 @@ impl<T> Default for List<T> {
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
         self.clear()
+    }
+}
+
+/// An iterator that yields shared references to the elements of a list.
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
+}
+
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.take().map(|node| {
+            self.next = node.next.as_deref();
+            &node.elem
+        })
+    }
+}
+
+/// An iterator that yields mutable references to the elements of a list.
+pub struct IterMut<'a, T> {
+    next: Option<&'a mut Node<T>>,
+}
+
+impl<'a, T> Iterator for IterMut<'a, T> {
+    type Item = &'a mut T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.take().map(|node| {
+            self.next = node.next.as_deref_mut();
+            &mut node.elem
+        })
     }
 }
 
