@@ -29,11 +29,11 @@ pub struct ListVersion {
     /// When this is 0, all items in the module are considered "experimental",
     /// and may be removed at any crate minor release.
     /// Otherwise, the biggest change to *any* module will cause that level of crate update.
-    pub major: u32,
+    pub major: u16,
     /// The minor version of a module.
-    pub minor: u32,
+    pub minor: u16,
     /// The patch version of a module.
-    pub patch: u32
+    pub patch: u16
 }
 
 impl ListVersion {
