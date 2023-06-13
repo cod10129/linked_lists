@@ -105,6 +105,20 @@ impl<T> Drop for List<T> {
     }
 }
 
+macro_rules! exact_size_iter_impl {
+    ($type: ty) => {
+        impl<'a, T> ExactSizeIterator for $type {
+            fn len(&self) -> usize {
+                self.size_hint().0
+            }
+
+            // NOTE:
+            // Once https://github.com/rust-lang/rust/issues/35428 is stabilized,
+            // get ExactSizeIterator::is_empty from List::is_empty or similar
+        }
+    }
+}
+
 /// An iterator that yields shared references to the elements of a list.
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
@@ -131,20 +145,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
-impl<'a, T> ExactSizeIterator for Iter<'a, T> {
-    fn len(&self) -> usize {
-        self.size_hint().0
-    }
-
-    // NOTE:
-    // Once https://github.com/rust-lang/rust/issues/35428 is stabilized,
-    // uncomment this fn
-    /*
-    fn is_empty(&self) -> bool {
-        self.next.is_none()
-    }
-    */
-}
+exact_size_iter_impl!{Iter<'a, T>}
 
 /// An iterator that yields mutable references to the elements of a list.
 pub struct IterMut<'a, T> {
@@ -152,6 +153,7 @@ pub struct IterMut<'a, T> {
 }
 
 impl<'a, T> IterMut<'a, T> {
+    // Allow this because it makes it clearer that the Iter lives for 'b and not 'a.
     #[allow(clippy::needless_lifetimes)]
     fn as_iter<'b>(&'b self) -> Iter<'b, T> {
         Iter {
@@ -175,20 +177,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     }
 }
 
-impl<'a, T> ExactSizeIterator for IterMut<'a, T> {
-    fn len(&self) -> usize {
-        self.size_hint().0
-    }
-
-    // NOTE:
-    // Once https://github.com/rust-lang/rust/issues/35428 is stabilized,
-    // uncomment this fn
-    /*
-    fn is_empty(&self) -> bool {
-        self.next.is_none()
-    }
-    */
-}
+exact_size_iter_impl!{IterMut<'a, T>}
 
 /// An iterator that consumes a list and yields its elements.
 pub struct IntoIter<T> {
@@ -207,20 +196,7 @@ impl<T> Iterator for IntoIter<T> {
     }
 }
 
-impl<T> ExactSizeIterator for IntoIter<T> {
-    fn len(&self) -> usize {
-        self.size_hint().0
-    }
-
-    // NOTE:
-    // Once https://github.com/rust-lang/rust/issues/35428 is stabilized,
-    // uncomment this fn
-    /*
-    fn is_empty(&self) -> bool {
-        self.list.is_empty()
-    }
-    */
-}
+exact_size_iter_impl!{IntoIter<T>}
 
 #[cfg(test)]
 mod tests {
