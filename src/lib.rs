@@ -66,22 +66,27 @@ impl ListVersion {
     /// # Examples
     /// 
     /// ```
-    /// use linked_lists::stack::VERSION;
+    /// use linked_lists::ListVersion;
+    /// 
+    /// let version = ListVersion {
+    ///     major: 1,
+    ///     minor: 2,
+    ///     patch: 3,
+    /// };
     /// 
     /// let expected = linked_lists::ListVersion {
     ///     major: 1,
     ///     minor: 0,
     ///     patch: 0
-    /// }
-    /// assert!(VERSION.compatible(expected));
+    /// };
+    /// 
+    /// assert!(version.compatible(expected));
     /// ```
     pub fn compatible(self, other: ListVersion) -> bool {
         if self.get_maj() == other.get_maj() && self.get_min() > other.get_min() {
             true
-        } else if self.get_min() == other.get_min() && self.patch >= other.patch {
-            true
-        } else { 
-            false 
+        } else {
+            self.get_min() == other.get_min() && self.patch >= other.patch
         }
     }
 }
@@ -117,8 +122,8 @@ mod tests {
 
         let less_experimental = ListVersion {
             major: 0,
-            minor: 2,
-            patch: 3,
+            minor: 1,
+            patch: 77,
         };
 
         assert!(less_experimental.compatible(experimental));
