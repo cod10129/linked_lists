@@ -37,11 +37,52 @@ pub struct ListVersion {
 }
 
 impl ListVersion {
+    /// Gets the effective major version.
+    /// By SemVer spec, in `0.x.y` version, minor should be considered the "major" version.
+    #[inline]
+    fn get_maj(self) -> u16 {
+        if self.experimental() { self.minor }
+        else { self.major }
+    }
+
+    /// Gets the effective minor version.
+    /// By SemVer spec, in `0.x.y` versions, patch should be considered the "minor" version.
+    #[inline]
+    fn get_min(self) -> u16 {
+        if self.experimental() { self.patch }
+        else { self.minor }
+    }
+
     /// Returns whether this list is considered "experimental" or not.
     ///
     /// An experimental list can have breaking changes in non-breaking crate releases.
+    #[inline]
     pub fn experimental(self) -> bool {
         self.major == 0
+    }
+
+    /// Returns whether `self` could be used when `other` was the specified version.
+    /// 
+    /// # Examples
+    /// 
+    /// ```
+    /// use linked_lists::stack::VERSION;
+    /// 
+    /// let expected = linked_lists::ListVersion {
+    ///     major: 1,
+    ///     minor: 0,
+    ///     patch: 0
+    /// }
+    /// assert!(VERSION.compatible(expected));
+    /// ```
+    pub fn compatible(self, other: ListVersion) -> bool {
+        if self.get_maj() == other.get_maj() && self.get_min() > other.get_min() {
+            true
+        } else if self.get_min() == other.get_min() && self.patch >= other.patch {
+            true
+        } else { 
+            false 
+        }
     }
 }
 
@@ -61,3 +102,42 @@ impl fmt::Debug for ListVersion {
 
 #[cfg(feature = "stack")]
 pub mod stack;
+
+#[cfg(test)]
+mod tests {
+    use super::ListVersion;
+
+    #[test]
+    fn compatibility() {
+        let experimental = ListVersion {
+            major: 0,
+            minor: 1,
+            patch: 4,
+        };
+
+        let less_experimental = ListVersion {
+            major: 0,
+            minor: 2,
+            patch: 3,
+        };
+
+        assert!(less_experimental.compatible(experimental));
+
+        let one = ListVersion {
+            major: 1,
+            minor: 3,
+            patch: 4,
+        };
+
+        assert!(!one.compatible(experimental));
+
+        let two = ListVersion {
+            major: 2,
+            minor: 0,
+            patch: 0,
+        };
+
+        assert!(!one.compatible(two));
+        assert!(!two.compatible(one));
+    }
+}
