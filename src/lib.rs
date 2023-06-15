@@ -92,6 +92,18 @@ impl ListVersion {
     }
 }
 
+macro_rules! version {
+    ($major: literal, $minor: literal, $patch: literal) => {
+        use crate::ListVersion;
+        /// The `ListVersion` of this module. See [its documentation](ListVersion) for more information.
+        pub const VERSION: ListVersion = ListVersion {
+            major: $major,
+            minor: $minor,
+            patch: $patch
+        };
+    };
+}
+
 impl fmt::Display for ListVersion {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}.{}.{}", self.major, self.minor, self.patch)

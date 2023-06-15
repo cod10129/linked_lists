@@ -1,14 +1,8 @@
 //! A singly linked list with stack operations.
-use super::ListVersion;
 use alloc::boxed::Box;
 use core::iter::FusedIterator;
 
-/// The `ListVersion` of this module. See [its documentation](ListVersion) for more information.
-pub const VERSION: ListVersion = ListVersion {
-    major: 1,
-    minor: 3,
-    patch: 0,
-};
+version!{1, 3, 0}
 
 /// A singly linked list that can do (most of) what a stack can.
 pub struct List<T> {
