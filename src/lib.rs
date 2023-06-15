@@ -121,7 +121,7 @@ pub mod stack;
 
 #[macro_use]
 #[cfg(any(feature = "persistent", feature = "persistent_arc"))]
-mod persistent_macs;
+mod persistent_common;
 
 #[cfg(feature = "persistent")]
 pub mod persistent;
