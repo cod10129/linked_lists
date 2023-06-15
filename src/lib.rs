@@ -108,6 +108,15 @@ impl fmt::Debug for ListVersion {
 #[cfg(feature = "stack")]
 pub mod stack;
 
+#[cfg(feature = "persistent")]
+pub mod persistent;
+
+#[cfg(feature = "persistent_arc")]
+pub mod persistent_arc;
+
+#[cfg(any(feature = "persistent", feature = "persistent_arc"))]
+mod persistent_impl;
+
 #[cfg(test)]
 mod tests {
     use super::ListVersion;

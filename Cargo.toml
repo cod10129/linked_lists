@@ -11,3 +11,5 @@ all-features = true
 
 [features]
 stack = []
+persistent = []
+persistent_arc = []
