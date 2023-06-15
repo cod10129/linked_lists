@@ -8,7 +8,7 @@
 //! [`persistent_arc`]: crate::persistent_arc
 use alloc::rc::Rc;
 
-make_list_def!{Rc;
+make_list!{Rc;
 /// A singly linked shared persistent list that is not thread safe.
 /// See the [module-level documentation](self) for more.
 }
