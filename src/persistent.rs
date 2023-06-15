@@ -1,9 +1,14 @@
-//! A singly linked persistent list using reference-counting pointers.
+//! A singly linked persistent list using `Rc`.
 //! 
-//! This `List` uses [`Rc`], which makes it not thread-safe.
+//! Because this list uses [`Rc`], it is not thread-safe.
 //! If you need this to be thread-safe, enable the `persistent_arc`
 //! crate feature, and use the [`persistent_arc`] module instead.
-//! That module has the exact same API as this one, and only the internals are changed.
+//! That module has the exact same API as this one.
 //! 
 //! [`persistent_arc`]: crate::persistent_arc
-//! [`Rc`]: alloc::rc::Rc
+use alloc::rc::Rc;
+
+make_list_def!{Rc;
+/// A singly linked shared persistent list that is not thread safe.
+/// See the [module-level documentation](self) for more.
+}

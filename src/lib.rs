@@ -5,6 +5,7 @@
 #![deny(unsafe_code)]
 
 extern crate alloc;
+use core::fmt;
 
 /// A struct describing the version of a module in this crate.
 ///
@@ -91,8 +92,6 @@ impl ListVersion {
     }
 }
 
-use core::fmt;
-
 impl fmt::Display for ListVersion {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}.{}.{}", self.major, self.minor, self.patch)
@@ -108,14 +107,15 @@ impl fmt::Debug for ListVersion {
 #[cfg(feature = "stack")]
 pub mod stack;
 
+#[macro_use]
+#[cfg(any(feature = "persistent", feature = "persistent_arc"))]
+mod persistent_macs;
+
 #[cfg(feature = "persistent")]
 pub mod persistent;
 
 #[cfg(feature = "persistent_arc")]
 pub mod persistent_arc;
-
-#[cfg(any(feature = "persistent", feature = "persistent_arc"))]
-mod persistent_impl;
 
 #[cfg(test)]
 mod tests {
