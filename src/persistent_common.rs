@@ -11,6 +11,7 @@ macro_rules! make_list {
         }
 
         list_impl!{$ptr}
+        make_iter!{}
     };
 }
 
@@ -46,6 +47,11 @@ macro_rules! list_impl {
             pub fn head(&self) -> Option<&T> {
                 self.head.as_ref().map(|node| &node.elem)
             }
+
+            /// Creates an iterator that yields shared references to each element in the list.
+            pub fn iter(&self) -> Iter<'_, T> {
+                Iter { next: self.head.as_deref() }
+            }
         }
 
         impl<T> Clone for List<T> {
@@ -70,6 +76,43 @@ macro_rules! list_impl {
                         break;
                     }
                 }
+            }
+        }
+    };
+}
+
+macro_rules! make_iter {
+    () => {
+        /// An iterator that yields shared references to the elements of a list.
+        pub struct Iter<'a, T> {
+            next: Option<&'a Node<T>>
+        }
+
+        impl<'a, T> Iterator for Iter<'a, T> {
+            type Item = &'a T;
+
+            fn next(&mut self) -> Option<Self::Item> {
+                self.next.map(|node| {
+                    self.next = node.next.as_deref();
+                    &node.elem
+                })
+            }
+
+            fn size_hint(&self) -> (usize, Option<usize>) {
+                let mut len = 0;
+                let mut current = self.next;
+                while let Some(node) = current {
+                    current = node.next.as_deref();
+                    len += 1;
+                }
+
+                (len, Some(len))
+            }
+        }
+
+        impl<'a, T> ExactSizeIterator for Iter<'a, T> {
+            fn len(&self) -> usize {
+                self.size_hint().0
             }
         }
     };
