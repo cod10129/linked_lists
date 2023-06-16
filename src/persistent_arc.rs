@@ -13,3 +13,5 @@ make_list!{Arc;
 /// A singly linked shared persistent list that is thread safe.
 /// See the [module-level documentation](self) for more.
 }
+
+tests!{}

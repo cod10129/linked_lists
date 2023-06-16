@@ -12,3 +12,5 @@ make_list!{Rc;
 /// A singly linked shared persistent list that is not thread safe.
 /// See the [module-level documentation](self) for more.
 }
+
+tests!{}
