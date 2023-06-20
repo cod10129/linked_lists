@@ -1,4 +1,6 @@
 //! A crate containing many types of linked lists.
+//! 
+//! Each different list is enabled with a cargo feature.
 
 #![no_std]
 #![warn(missing_docs)]
