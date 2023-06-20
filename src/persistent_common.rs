@@ -28,6 +28,11 @@ macro_rules! list_impl {
                 self.head.is_none()
             }
 
+            /// Returns the length of the list.
+            pub fn len(&self) -> usize {
+                self.iter().len()
+            }
+
             /// Prepends an element to the front of the list, returning the new list.
             pub fn prepend(&self, elem: T) -> Self {
                 Self { head: Some($ptr::new(Node {
@@ -149,6 +154,29 @@ macro_rules! tests {
 
                 let list = list.tail();
                 assert!(list.is_empty());
+            }
+
+            #[test]
+            fn len() {
+                let list = List::new();
+                assert_eq!(list.len(), 0);
+
+                let list = list.prepend(1).prepend(2);
+                assert_eq!(list.len(), 2);
+
+                let list = list.tail();
+                assert_eq!(list.len(), 1);
+            }
+
+            #[test]
+            fn iter() {
+                let list = List::new().prepend(1).prepend(2);
+
+                let mut iter = list.iter();
+
+                assert_eq!(iter.next(), Some(&2));
+                assert_eq!(iter.next(), Some(&1));
+                assert_eq!(iter.next(), None);
             }
         }
     }
