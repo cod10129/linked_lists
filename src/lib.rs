@@ -96,9 +96,10 @@ impl ListVersion {
 
 macro_rules! version {
     ($major: literal, $minor: literal, $patch: literal) => {
-        use crate::ListVersion;
-        /// The `ListVersion` of this module. See [its documentation](ListVersion) for more information.
-        pub const VERSION: ListVersion = ListVersion {
+        #[doc = "The current `ListVersion` of this module. "]
+        #[doc = concat!("(", $major, ".", $minor, ".", $patch, ")")]
+        #[doc = " See [its documentation](crate::ListVersion) for more information."]
+        pub const VERSION: crate::ListVersion = crate::ListVersion {
             major: $major,
             minor: $minor,
             patch: $patch
