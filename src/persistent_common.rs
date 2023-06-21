@@ -81,6 +81,15 @@ macro_rules! list_impl {
             }
         }
 
+        impl<'a, T> IntoIterator for &'a List<T> {
+            type Item = &'a T;
+            type IntoIter = Iter<'a, T>;
+
+            fn into_iter(self) -> Iter<'a, T> {
+                Iter { next: self.head.as_deref() }
+            }
+        }
+
         impl<T> Drop for List<T> {
             fn drop(&mut self) {
                 let mut cur = self.head.take();
