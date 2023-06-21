@@ -231,6 +231,26 @@ impl<T> FusedIterator for IntoIter<T> {}
 
 exact_size_iter_impl!{IntoIter<T>}
 
+#[allow(dead_code)]
+fn assert_properties() {
+    fn is_thread_safe<T: Send + Sync>() {}
+
+    is_thread_safe::<List<i32>>();
+    is_thread_safe::<IntoIter<i32>>();
+    is_thread_safe::<Iter<i32>>();
+    is_thread_safe::<IterMut<i32>>();
+
+    fn list_covariant<'a, T>(x: List<&'static T>) -> List<&'a T> { x }
+    fn iter_covariant<'i, 'a, T>(x: Iter<'i, &'static T>) -> Iter<'i, &'a T> { x }
+    fn into_iter_covariant<'a, T>(x: IntoIter<&'static T>) -> IntoIter<&'a T> { x }
+    /// ```compile_fail
+    /// use linked_lists::stack::IterMut;
+    /// 
+    /// fn iter_mut_covariant<'i, 'a, T>(x: IterMut<'i, &'static T>) -> IterMut<'i, &'a T> { x }
+    /// ```
+    fn iter_mut_invariant() {}
+}
+
 #[cfg(test)]
 mod tests {
     use super::List;
