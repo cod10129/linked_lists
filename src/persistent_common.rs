@@ -71,6 +71,16 @@ macro_rules! list_impl {
             }
         }
 
+        impl<T> FromIterator<T> for List<T> {
+            fn from_iter<I: IntoIterator<Item=T>>(iter: I) -> Self {
+                let mut list = List::new();
+                for elem in iter {
+                    list = list.prepend(elem);
+                }
+                list
+            }
+        }
+
         impl<T> Drop for List<T> {
             fn drop(&mut self) {
                 let mut cur = self.head.take();
