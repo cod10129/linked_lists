@@ -90,6 +90,12 @@ impl<T> Extend<T> for List<T> {
     }
 }
 
+impl<'a, T: 'a + Copy> Extend<&'a T> for List<T> {
+    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) {
+        self.extend(iter.into_iter().copied())
+    }
+}
+
 impl<T> FromIterator<T> for List<T> {
     fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
         let mut list = List::new();
@@ -254,6 +260,7 @@ fn assert_properties() {
 #[cfg(test)]
 mod tests {
     use super::List;
+    use alloc::vec;
 
     #[test]
     fn push_pop() {
@@ -357,8 +364,6 @@ mod tests {
 
     #[test]
     fn from_iter() {
-        use alloc::vec;
-
         let vec = vec![1, 2, 3];
         let list = List::from_iter(vec);
 
@@ -385,5 +390,21 @@ mod tests {
             assert_eq!(elem, i);
             i -= 1;
         }
+    }
+
+    #[test]
+    fn extend() {
+        let vec = vec![2, 3, 4];
+
+        let mut list = List::new();
+        list.push(1);
+
+        list.extend(&vec);
+
+        assert_eq!(list.pop(), Some(4));
+        assert_eq!(list.pop(), Some(3));
+        assert_eq!(list.pop(), Some(2));
+        assert_eq!(list.pop(), Some(1));
+        assert_eq!(list.pop(), None);
     }
 }
