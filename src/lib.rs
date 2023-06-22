@@ -5,6 +5,9 @@
 #![no_std]
 #![warn(missing_docs)]
 #![deny(unsafe_code)]
+#![warn(clippy::pedantic)]
+#![allow(clippy::must_use_candidate)]
+#![allow(clippy::return_self_not_must_use)]
 
 extern crate alloc;
 use core::fmt;
@@ -20,8 +23,8 @@ use core::fmt;
 /// because the update only broke a specific list that you are not using.
 ///
 /// Essentially, when using this crate, you should always use an exact version specifier `=x.y.z`,
-/// and only update when you have checked the new ListVersion of the list(s) you are using.
-/// The ListVersion of all of the lists is next to the module name in the README, and in `module::VERSION`.
+/// and only update when you have checked the new `ListVersion` of the list(s) you are using.
+/// The `ListVersion` of all of the lists is next to the module name in the README, and in `module::VERSION`.
 ///
 /// See the [SemVer specification](https://semver.org) for details on the meaning of
 /// "major", "minor", and "patch".
@@ -41,7 +44,7 @@ pub struct ListVersion {
 
 impl ListVersion {
     /// Gets the effective major version.
-    /// By SemVer spec, in `0.x.y` version, minor should be considered the "major" version.
+    /// By Cargo specification, in `0.x.y` version, minor should be considered the "major" version.
     #[inline]
     fn get_maj(self) -> u16 {
         if self.experimental() { self.minor }
@@ -49,7 +52,7 @@ impl ListVersion {
     }
 
     /// Gets the effective minor version.
-    /// By SemVer spec, in `0.x.y` versions, patch should be considered the "minor" version.
+    /// By Cargo specification, in `0.x.y` versions, patch should be considered the "minor" version.
     #[inline]
     fn get_min(self) -> u16 {
         if self.experimental() { self.patch }

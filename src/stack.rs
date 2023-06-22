@@ -92,7 +92,7 @@ impl<T> Extend<T> for List<T> {
 
 impl<'a, T: 'a + Copy> Extend<&'a T> for List<T> {
     fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) {
-        self.extend(iter.into_iter().copied())
+        self.extend(iter.into_iter().copied());
     }
 }
 
@@ -134,7 +134,7 @@ impl<T> Default for List<T> {
 
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
-        self.clear()
+        self.clear();
     }
 }
 
@@ -239,13 +239,6 @@ exact_size_iter_impl!{IntoIter<T>}
 
 #[allow(dead_code)]
 fn assert_properties() {
-    fn is_thread_safe<T: Send + Sync>() {}
-
-    is_thread_safe::<List<i32>>();
-    is_thread_safe::<IntoIter<i32>>();
-    is_thread_safe::<Iter<i32>>();
-    is_thread_safe::<IterMut<i32>>();
-
     fn list_covariant<'a, T>(x: List<&'static T>) -> List<&'a T> { x }
     fn iter_covariant<'i, 'a, T>(x: Iter<'i, &'static T>) -> Iter<'i, &'a T> { x }
     fn into_iter_covariant<'a, T>(x: IntoIter<&'static T>) -> IntoIter<&'a T> { x }
@@ -255,6 +248,13 @@ fn assert_properties() {
     /// fn iter_mut_covariant<'i, 'a, T>(x: IterMut<'i, &'static T>) -> IterMut<'i, &'a T> { x }
     /// ```
     fn iter_mut_invariant() {}
+
+    fn is_thread_safe<T: Send + Sync>() {}
+
+    is_thread_safe::<List<i32>>();
+    is_thread_safe::<IntoIter<i32>>();
+    is_thread_safe::<Iter<i32>>();
+    is_thread_safe::<IterMut<i32>>();
 }
 
 #[cfg(test)]
