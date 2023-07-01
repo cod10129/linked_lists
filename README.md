@@ -6,8 +6,8 @@ A crate containing many different types of linked lists.
 
 ## Currently existing lists:
 - `stack` (*[1.3.0][stackversion]*): A singly linked list with stack operations.
-- `persistent` (*[1.0.0][persistentversion]*): A persistent immutable non-thread safe list.
-- `persistent_arc` (*[1.0.0][persistentarcversion]*): A persistent immutable thread safe list.
+- `persistent` (*[1.1.0][persistentversion]*): A persistent immutable non-thread safe list.
+- `persistent_arc` (*[1.1.0][persistentarcversion]*): A persistent immutable thread safe list.
 
 [stackversion]: https://docs.rs/linked_lists/0.1.6/linked_lists/stack/constant.VERSION.html
 [persistentversion]: https://docs.rs/linked_lists/0.1.6/linked_lists/persistent/constant.VERSION.html
