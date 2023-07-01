@@ -9,6 +9,6 @@ A crate containing many different types of linked lists.
 - `persistent` (*[1.0.0][persistentversion]*): A persistent immutable non-thread safe list.
 - `persistent_arc` (*[1.0.0][persistentarcversion]*): A persistent immutable thread safe list.
 
-[stackversion]: https://docs.rs/linked_lists/0.1.5/linked_lists/stack/constant.VERSION.html
-[persistentversion]: https://docs.rs/linked_lists/0.1.5/linked_lists/persistent/constant.VERSION.html
-[persistentarcversion]: https://docs.rs/linked_lists/0.1.5/linked_lists/persistent_arc/constant.VERSION.html
+[stackversion]: https://docs.rs/linked_lists/0.1.6/linked_lists/stack/constant.VERSION.html
+[persistentversion]: https://docs.rs/linked_lists/0.1.6/linked_lists/persistent/constant.VERSION.html
+[persistentarcversion]: https://docs.rs/linked_lists/0.1.6/linked_lists/persistent_arc/constant.VERSION.html
