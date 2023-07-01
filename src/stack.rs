@@ -1,6 +1,7 @@
 //! A singly linked list with stack operations.
 use alloc::boxed::Box;
 use core::iter::FusedIterator;
+use core::fmt;
 
 version!{1, 3, 0}
 
@@ -125,6 +126,12 @@ fn list_into_iter<T>(list: List<T>) -> IntoIter<T> {
 into_iter_impl!{List<T>, T, IntoIter<T>, list_into_iter}
 into_iter_impl!{&'a List<T>, &'a T, Iter<'a, T>, List::iter}
 into_iter_impl!{&'a mut List<T>, &'a mut T, IterMut<'a, T>, List::iter_mut}
+
+impl<T: fmt::Debug> fmt::Debug for List<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_list().entries(self).finish()
+    }
+}
 
 impl<T> Default for List<T> {
     fn default() -> Self {
@@ -312,6 +319,33 @@ mod tests {
         list.clear();
         assert!(list.is_empty());
         assert!(list.pop().is_none());
+    }
+
+    #[test]
+    fn debug_fmt() {
+        use alloc::format;
+
+        let mut list = List::new();
+        assert_eq!(
+            "[]",
+            format!("{list:?}")
+        );
+
+        list.push(1);
+        list.push(2);
+        list.push(3);
+
+        assert_eq!(
+            "[3, 2, 1]",
+            format!("{list:?}")
+        );
+
+        list.pop();
+
+        assert_eq!(
+            "[2, 1]",
+            format!("{list:?}")
+        )
     }
 
     #[test]
