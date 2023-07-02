@@ -17,7 +17,7 @@ struct Node<T> {
 
 impl<T> List<T> {
     /// Creates a new list.
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         List { head: None }
     }
 
@@ -40,7 +40,7 @@ impl<T> List<T> {
     }
 
     /// Returns whether the list is empty.
-    pub fn is_empty(&self) -> bool {
+    pub const fn is_empty(&self) -> bool {
         self.head.is_none()
     }
 
