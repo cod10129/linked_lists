@@ -3,7 +3,7 @@ use alloc::boxed::Box;
 use core::iter::FusedIterator;
 use core::fmt;
 
-version!{1, 3, 0}
+version!{1, 4, 0}
 
 /// A singly linked list that can do (most of) what a stack can.
 pub struct List<T> {

@@ -9,7 +9,7 @@
 //! [`persistent`]: crate::persistent
 use alloc::sync::Arc;
 
-version!{1, 1, 0}
+version!{1, 2, 0}
 
 make_list!{Arc;
 /// A singly linked shared persistent list that is thread safe.
