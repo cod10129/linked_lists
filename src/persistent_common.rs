@@ -65,6 +65,13 @@ macro_rules! list_impl {
             }
         }
 
+        use core::fmt;
+        impl<T: fmt::Debug> fmt::Debug for List<T> {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.debug_list().entries(self).finish()
+            }
+        }
+
         impl<T> Default for List<T> {
             fn default() -> Self {
                 Self::new()
