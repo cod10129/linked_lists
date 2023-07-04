@@ -194,16 +194,6 @@ pub struct IterMut<'a, T> {
     next: Option<&'a mut Node<T>>,
 }
 
-impl<'a, T> IterMut<'a, T> {
-    // Allow this because it makes it clearer that the Iter lives for 'b and not 'a.
-    #[allow(clippy::needless_lifetimes)]
-    fn as_iter<'b>(&'b self) -> Iter<'b, T> {
-        Iter {
-            next: self.next.as_deref(),
-        }
-    }
-}
-
 impl<'a, T> Iterator for IterMut<'a, T> {
     type Item = &'a mut T;
 
@@ -215,7 +205,9 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        self.as_iter().size_hint()
+        Iter {
+            next: self.next.as_deref()
+        }.size_hint()
     }
 }
 
