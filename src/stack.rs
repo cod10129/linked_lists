@@ -160,6 +160,7 @@ macro_rules! exact_size_iter_impl {
 }
 
 /// An iterator that yields shared references to the elements of a list.
+#[must_use = "iterators are lazy and do nothing unless consumed"]
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }
@@ -190,6 +191,7 @@ impl<'a, T> FusedIterator for Iter<'a, T> {}
 exact_size_iter_impl!{Iter<'a, T>}
 
 /// An iterator that yields mutable references to the elements of a list.
+#[must_use = "iterators are lazy and do nothing unless consumed"]
 pub struct IterMut<'a, T> {
     next: Option<&'a mut Node<T>>,
 }
@@ -216,6 +218,7 @@ impl<'a, T> FusedIterator for IterMut<'a, T> {}
 exact_size_iter_impl!{IterMut<'a, T>}
 
 /// An iterator that consumes a list and yields its elements.
+#[must_use = "iterators are lazy and do nothing unless consumed"]
 pub struct IntoIter<T> {
     list: List<T>,
 }

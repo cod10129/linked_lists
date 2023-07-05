@@ -115,6 +115,7 @@ macro_rules! list_impl {
 macro_rules! make_iter {
     () => {
         /// An iterator that yields shared references to the elements of a list.
+        #[must_use = "iterators are lazy and do nothing unless consumed"]
         pub struct Iter<'a, T> {
             next: Option<&'a Node<T>>
         }
